@@ -13,6 +13,7 @@ ffi.cdef(
     typedef struct _modbus modbus_t;
     int modbus_connect(modbus_t *ctx);
     int modbus_set_slave(modbus_t *ctx, int slave);
+    int modbus_rtu_set_rts(modbus_t *ctx, int mode);
     void modbus_get_response_timeout(modbus_t *ctx, uint32_t *to_sec, uint32_t *to_usec);
     void modbus_set_response_timeout(modbus_t *ctx, uint32_t to_sec, uint32_t to_usec);
     void modbus_close(modbus_t *ctx);
@@ -70,6 +71,9 @@ class ModbusCore(object):
 
     def set_slave(self, slave):
         return self._run(C.modbus_set_slave, slave)
+
+    def rtu_set_rts(self, mode):
+        return self._run(C.modbus_rtu_set_rts, mode)
 
     def get_response_timeout(self):
         sec = ffi.new("uint32_t*")
