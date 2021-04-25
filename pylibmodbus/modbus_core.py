@@ -16,6 +16,7 @@ ffi.cdef(
     void modbus_get_response_timeout(modbus_t *ctx, uint32_t *to_sec, uint32_t *to_usec);
     void modbus_set_response_timeout(modbus_t *ctx, uint32_t to_sec, uint32_t to_usec);
     void modbus_close(modbus_t *ctx);
+    void modbus_set_debug(modbus_t *ctx, int boolean);
     const char *modbus_strerror(int errnum);
 
     int modbus_read_bits(modbus_t *ctx, int addr, int nb, uint8_t *dest);
@@ -80,6 +81,9 @@ class ModbusCore(object):
         sec = int(seconds)
         usec = int((seconds - sec) * 1000000)
         self._run(C.modbus_set_response_timeout, sec, usec)
+
+    def set_debug(self, boolean):
+        C.modbus_set_debug(self.ctx, boolean)
 
     def close(self):
         C.modbus_close(self.ctx)
