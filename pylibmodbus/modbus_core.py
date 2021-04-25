@@ -105,7 +105,7 @@ class ModbusCore(object):
     def read_registers(self, addr, nb):
         dest = ffi.new("uint16_t[]", nb)
         self._run(C.modbus_read_registers, addr, nb, dest)
-        return dest
+        return ffi.unpack(dest, nb)
 
     def read_input_registers(self, addr, nb):
         dest = ffi.new("uint16_t[]", nb)
